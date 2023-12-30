@@ -1,6 +1,8 @@
 package pro.sky.homework_4_1.service;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +27,7 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
 public class AvatarServiceImpl implements AvatarService {
+    private final Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
 
     private final String avatarsDir;
     private final StudentRepository studentRepository;
@@ -38,6 +41,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public ResponseEntity<String> uploadAvatar(Long id, MultipartFile file) throws IOException {
+        logger.info("Was invoked method for upload avatar");   // вывод сообщения с уровнем INFO
         Student student = studentRepository.findById(id).get();
 
         Path filePath = Path.of(avatarsDir, student + "." + getExtension(file.getOriginalFilename()));
@@ -81,6 +85,7 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     public Avatar findAvatar(Long id) {
+        logger.info("Was invoked method for find avatar");   // вывод сообщения с уровнем INFO
         return avatarRepository.findById(id).orElse(new Avatar());
     }
 
@@ -89,6 +94,7 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     public List<Avatar> getAvatars(int page, int size) {
+        logger.info("Was invoked method for get avatars");   // вывод сообщения с уровнем INFO
         Pageable pageable = PageRequest.of(page, size);
         return avatarRepository.findAll(pageable).getContent();
     }
