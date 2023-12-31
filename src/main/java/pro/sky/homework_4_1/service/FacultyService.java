@@ -17,9 +17,11 @@ public interface FacultyService {
 
     List<Faculty> facultyByColor(String color);
 
-    public Faculty findByName(String name);
+    Faculty findByName(String name);
 
-    public Faculty findByColor(String color);
+    Faculty findByColor(String color);
 
-    public Collection<Student> getStudents(Long id);
+    Collection<Student> getStudents(Long id);
+
+    String getLongestFacultyName();
 }

@@ -93,4 +93,13 @@ public class FacultyServiceImpl implements FacultyService{
         return faculty.students;
     }
 
+    @Override
+    public String getLongestFacultyName() {
+        logger.info("Was invoked method for get longest faculty names");   // вывод сообщения с уровнем INFO
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .sorted((name1, name2)  -> name2.length() - name1.length())
+                .toList()
+                .get(0);
+    }
 }

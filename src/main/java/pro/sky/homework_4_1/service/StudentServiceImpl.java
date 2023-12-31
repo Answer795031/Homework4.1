@@ -104,4 +104,23 @@ public class StudentServiceImpl implements StudentService{
         logger.info("Was invoked method for get five last students in DB");   // вывод сообщения с уровнем INFO
         return studentRepository.getFiveLastStudents();
     }
+
+    @Override
+    public List<String> getNamesStartsWithA() {
+        logger.info("Was invoked method for get all students with name starts by A");   // вывод сообщения с уровнем INFO
+        String symbol = "A";
+        return studentRepository.findAll().stream()
+                .map(student -> student.getName().toUpperCase())
+                .filter(name -> name.startsWith(symbol))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public double getAverageAgeStream() {
+        logger.info("Was invoked method for get average students age");   // вывод сообщения с уровнем INFO
+        return studentRepository.findAll().stream()
+                .mapToDouble(Student::getAge)
+                .average()
+                .orElse(-1);
+    }
 }
