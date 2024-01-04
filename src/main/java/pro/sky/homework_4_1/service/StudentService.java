@@ -29,4 +29,8 @@ public interface StudentService {
     List<String> getNamesStartsWithA();
 
     double getAverageAgeStream();
+
+    void printStudentsParallel();
+
+    void printStudentsSynchronized();
 }

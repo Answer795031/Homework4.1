@@ -123,4 +123,58 @@ public class StudentServiceImpl implements StudentService{
                 .average()
                 .orElse(-1);
     }
+
+    public void printStudentsParallel() {
+        List<Student> students = studentRepository.findAll();
+
+        // вывод первых двух студентов в main-потоке
+        printStudent(students.get(0));
+        printStudent(students.get(1));
+
+        // вывод 3 и 4 студента в параллельном потоке №1
+        Thread thread1 = new Thread(() -> {
+            printStudent(students.get(2));
+            printStudent(students.get(3));
+        });
+        thread1.start();
+
+        // вывод 5 и 6 студентов в параллельном потоке №2
+        Thread thread2 = new Thread(() -> {
+            printStudent(students.get(4));
+            printStudent(students.get(5));
+        });
+        thread2.start();
+    }
+
+    public void printStudentsSynchronized() {
+        List<Student> students = studentRepository.findAll();
+
+        // вывод первых двух студентов в main-потоке
+        printStudentSync(students.get(0));
+        printStudentSync(students.get(1));
+
+        // вывод 3 и 4 студента в параллельном потоке №1
+        Thread thread1 = new Thread(() -> {
+            printStudentSync(students.get(2));
+            printStudentSync(students.get(3));
+        });
+        thread1.start();
+
+        // вывод 5 и 6 студентов в параллельном потоке №2
+        Thread thread2 = new Thread(() -> {
+            printStudentSync(students.get(4));
+            printStudentSync(students.get(5));
+        });
+        thread2.start();
+    }
+
+    // метод для параллельного вывода
+    private void printStudent(Student student) {
+        logger.info("Thread: {}. Student: {}", Thread.currentThread(), student);
+    }
+
+    // метод для синхронизированного вывода
+    private synchronized void printStudentSync(Student student) {
+        printStudent(student);
+    }
 }
